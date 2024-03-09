@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import static com.leetao.usercenter.constant.RedisConstant.RECOMMEND_KEY;
 import static com.leetao.usercenter.constant.UserConstants.USER_LOGIN_STATE;
 
 /**
@@ -148,15 +149,17 @@ public class UserController {
 	@GetMapping("/recommend")
 	public BaseResponse<Page<User>> recommendUsers(long pageSize, long pageNum, HttpServletRequest request) {
 		User loginUser = userService.getLoginUser(request);
-		String redisKey = String.format("yupao:user:recommend:%s",loginUser.getId());
+		String redisKey = RECOMMEND_KEY + loginUser.getId();
 		ValueOperations<String,Object> operations = redisTemplate.opsForValue();
 		Page<User> userPage = (Page<User>) operations.get(redisKey);
+		//缓存中存在直接从缓存中查询
 		if(userPage != null){
 			return ResultUtils.success(userPage);
 		}
 		QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 		userPage = userService.page(new Page<>(pageNum, pageSize), queryWrapper);
 		try {
+			//缓存中不存在，先从数据库中查询，再插入到redis中
 			operations.set(redisKey,userPage,30000, TimeUnit.MILLISECONDS);
 		} catch (Exception e) {
 			log.error("redis set key error",e);
