@@ -196,12 +196,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 		return userList.stream().filter(user -> {
 			//将用户信息中的tags字符串转换成为java对象再进行判断
 			String tags = user.getTags();
+			//标签不存在返回false
 			if(StringUtils.isBlank(tags)){
 				return false;
 			}
+			//将标签转换为集合判断
 			Set<String> tagSet = gson.fromJson(tags, new TypeToken<Set<String>>() {
 			}.getType());
-			//对每一个标签进行遍历，过滤user
+			//用户标签集合中不包含传入标签中任意一个返回false
 			for(String tagName : tagNameList){
 				if (!tagSet.contains(tagName)) {
 					return false;
