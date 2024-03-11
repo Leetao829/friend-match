@@ -160,7 +160,7 @@ public class UserController {
 		userPage = userService.page(new Page<>(pageNum, pageSize), queryWrapper);
 		try {
 			//缓存中不存在，先从数据库中查询，再插入到redis中
-			operations.set(redisKey,userPage,30000, TimeUnit.MILLISECONDS);
+			operations.set(redisKey,userPage,12, TimeUnit.HOURS);
 		} catch (Exception e) {
 			log.error("redis set key error",e);
 		}

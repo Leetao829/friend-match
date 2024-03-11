@@ -17,6 +17,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static com.leetao.usercenter.constant.RedisConstant.PRECACHE_LOCK;
+import static com.leetao.usercenter.constant.RedisConstant.RECOMMEND_KEY;
+
 /**
  * 缓存预热
  * @author leetao
@@ -38,11 +41,11 @@ public class PreCacheJob {
 
 	@Scheduled(cron = "30 19 19 * * *")
 	public void doCacheRecommendUsers(){
-		RLock lock = redissonClient.getLock("yupao:precachejob:docache:lock");
+		RLock lock = redissonClient.getLock(PRECACHE_LOCK);
 		try {
 			if(lock.tryLock(0,-1,TimeUnit.SECONDS)){
 				for(long userId : mainUserList){
-					String redisKey = String.format("yupao:user:recommend:%s",userId);
+					String redisKey = RECOMMEND_KEY + userId;
 					ValueOperations<String,Object> operations = redisTemplate.opsForValue();
 					QueryWrapper<User> queryWrapper = new QueryWrapper<>();
 					Page<User> userPage = userService.page(new Page<>(1, 10), queryWrapper);
