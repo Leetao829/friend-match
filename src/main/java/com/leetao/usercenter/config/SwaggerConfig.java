@@ -27,8 +27,8 @@ public class SwaggerConfig {
 	//配置文档信息
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
-				.title("用户中心")
-				.description("用户中心接口文档")
+				.title("伙伴匹配系统")
+				.description("伙伴匹配系统文档")
 				.termsOfServiceUrl("https://github.com/Leetao829")
 				.contact(new Contact("leetao","https://github.com/Leetao829","xxx@qq.com"))
 				.version("1.0")

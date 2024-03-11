@@ -15,6 +15,30 @@
 ## 后端技术栈
 SpringBoot+MybatisPlus+Mysql+Redis+Swagger+Knife4j（接口文档）<br/>
 
+## 启动流程
+&nbsp; &nbsp;1.修改mysql和redis配置
+```aidl
+spring:
+  application:
+    name: user-center
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:13306/universe
+    username: ###
+    password: ######
+  #设置session过期时间
+  session:
+    timeout: 86400
+    store-type: redis
+  redis:
+    database: 0
+    host: localhost
+    port: 6379
+```
+&nbsp; &nbsp;2.执行sql文件夹中文件建表以及插入模拟数据<br>
+&nbsp; &nbsp;3.在本地8080端口启动，访问http://localhost:8080/api/doc.html#/home
+打开接口测试文档<br>
+<img src=".\images\接口文档.jpg">
 ## 数据库表重要设计
 关于用户和标签的数据库表设计两种方案选型：<br/>
 方案一：<br>
