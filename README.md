@@ -17,7 +17,7 @@ SpringBoot+MybatisPlus+Mysql+Redis+Swagger+Knife4j（接口文档）<br/>
 
 ## 启动流程
 &nbsp; &nbsp;1.修改mysql和redis配置
-```aidl
+```yaml
 spring:
   application:
     name: user-center
