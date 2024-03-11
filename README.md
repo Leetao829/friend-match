@@ -39,7 +39,7 @@ spring:
 &nbsp; &nbsp;3.在本地8080端口启动，访问http://localhost:8080/api/doc.html#/home
 打开接口测试文档<br>
 <img src=".\images\接口文档.jpg">
-## 数据库表重要设计
+## 数据库表设计
 关于用户和标签的数据库表设计两种方案选型：<br/>
 方案一：<br>
 &nbsp;&nbsp;直接在用户属性上添加tags标签属性，需要保存为json格式（例如['java','男']），根据
@@ -59,4 +59,23 @@ spring:
 
 这里我选择第一种方式，并考虑使用redis作为缓存提高查询效率
 
-    
+## 共享session
+为了实现在多个实例中共享session中保存的用户登录状态，将用户登录状态保存在共享的redis中，
+为了简化开发，我们直接使用spring实现方式，配置完redis之后，引入下面两个依赖：<br>
+&nbsp;&nbsp;1.引入redis，能够操作redis
+```xml
+        <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+			<version>2.6.4</version>
+		</dependency>
+```
+&nbsp;&nbsp;2.引入spring-session和redis的整合，将session存储到redis当中
+```xml
+        <dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-data-redis</artifactId>
+			<version>2.6.3</version>
+		</dependency>
+```
+
