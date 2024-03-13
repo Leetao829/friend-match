@@ -214,7 +214,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team>
 			throw new BusinessException(ErrorCode.PARAMS_ERROR,"队伍不存在");
 		}
 		//只有管理员或者队长才能够修改队伍信息
-		if(oldTeam.getUserId() != loginUser.getId() && !userService.isAdmin(loginUser)){
+		if(oldTeam.getUserId().longValue() != loginUser.getId().longValue() && !userService.isAdmin(loginUser)){
 			throw new BusinessException(ErrorCode.NO_AUTH,"无修改队伍信息权限");
 		}
 		//如果需要修改为加密状态，那么必须有密码
